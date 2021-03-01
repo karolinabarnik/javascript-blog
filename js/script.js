@@ -4,6 +4,7 @@ document.getElementById('test-button').addEventListener('click', function () {
     console.log('links:', links);
 });
 const titleClickHandler = function (event) {
+    event.preventDefault();
     const clickedElement = this;
     console.log('Link was clicked!');
 }
@@ -19,9 +20,9 @@ for (let activeLink of activeLinks) {
 /* add class 'active' to the clicked link */
 
 const clickedElement = this;
-console.log('clickedElement:', clickedElement); {
-    clickedElement.classList.add('active');
-}
+console.log('clickedElement:', clickedElement);
+clickedElement.classList.add('active');
+
 
 
 /* remove class 'active' from all articles */
@@ -33,6 +34,8 @@ for (let activeArticle of activeArticles) {
 }
 
 /* get 'href' attribute from the clicked link */
+articleSelector = clickedElement.getAttribute(href);
+console.log('Was clicked');
 
 /* find the correct article using the selector (value of 'href' attribute) */
 
