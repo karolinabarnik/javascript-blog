@@ -49,24 +49,25 @@ function generateTitleLinks(customSelector = '') {
 
     /* for each article */
     const articles = document.querySelectorAll(optArticleSelector + customSelector)
-    for (let article of articles);
+    for (let article of articles) {
 
-    /* get the article id */
-    const articleId = article.getAttribute('id');
+        /* get the article id */
+        const articleId = article.getAttribute('id');
 
-    /* find the title element */
-    const articleTitle = article.querySelector(optTitleSelector).innerHTML;
+        /* find the title element */
+        const articleTitle = article.querySelector(optTitleSelector).innerHTML;
 
-    /* create HTML of the link */
-    const linkHTML = '<li><a href="#' + articleId + '"><span>' + articleTitle + '</span></a></li>';
+        /* create HTML of the link */
+        const linkHTML = '<li><a href="#' + articleId + '"><span>' + articleTitle + '</span></a></li>';
 
-    /* insert link into titleList */
-    titleList.insertAdjacentHTML('beforeend', linkHTML);
-}
+        /* insert link into titleList */
+        titleList.insertAdjacentHTML('beforeend', linkHTML);
+    }
 
-const links = document.querySelectorAll('.titles a');
-for (let link of links) {
-    link.addEventListener('click', titleClickHandler);
+    const links = document.querySelectorAll('.titles a');
+    for (let link of links) {
+        link.addEventListener('click', titleClickHandler);
+    }
 }
 
 generateTitleLinks();
@@ -182,14 +183,11 @@ function addClickListenersToTags() {
 
         /* add tagClickHandler as event listener for that link */
 
-        const tagClickHandler = document.addEventListener('click', function () {
-
-        })
+        const tagClickHandler = document.addEventListener('click')
 
         /* END LOOP: for each link */
     }
 }
-
 
 generateTags();
 tagClickHandler();
@@ -234,6 +232,10 @@ function generateAuthors() {
 }
 
 
+
+
+generateAuthors();
+
 function addClickListenersToAuthors() {
 
     /* find all links to author */
@@ -253,6 +255,7 @@ function addClickListenersToAuthors() {
         /* END LOOP: for each link */
     }
 }
+addClickListenersToAuthors();
 
 
 function authorClickHandler() {
@@ -288,6 +291,4 @@ function authorClickHandler() {
     generateTitleLinks(optArticleSelector);
 }
 
-generateAuthors();
 authorClickHandler();
-addClickListenersToAuthors();
