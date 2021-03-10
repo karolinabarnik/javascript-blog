@@ -30,10 +30,10 @@ const titleClickHandler = function (event) {
     }
 
     /* get 'href' attribute from the clicked link */
-    const href = clickedElement.getAttribute('href'); // np. #article-2
+    const articleSelector = clickedElement.getAttribute('href'); // np. #article-2
 
     /* find the correct article using the selector (value of 'href' attribute) */
-    const targetArticle = document.querySelector(href);
+    const targetArticle = document.querySelector(articleSelector);
 
     /* add class 'active' to the correct article */
     targetArticle.classList.add('active');
@@ -91,7 +91,7 @@ function generateTags() {
 
         /* get tags from data-tags attribute */
 
-        const articleTags = articles.getAttribute('data-tags');
+        const articleTags = article.getAttribute('data-tags');
 
         /* split tags into array */
 
@@ -108,12 +108,13 @@ function generateTags() {
 
             /* add generated code to html variable */
 
-            html.insertAdjacentHTML('beforeend', linkHTML);
+            tagsWrapper.insertAdjacentHTML('beforeend', linkHTML);
 
             /* END LOOP: for each tag */
         }
 
         /* insert HTML of all the links into the tags wrapper */
+        const linkHTML = '<li><a href="#tag-' + articleTags + '">' + articleTags + '</a></li>';
         tagsWrapper.insertAdjacentHTML('beforeend', linkHTML);
 
         /* END LOOP: for every article: */
@@ -121,13 +122,13 @@ function generateTags() {
 }
 
 
-function tagClickHandler(event) {
+const tagClickHandler = function (event) {
     /* prevent default action for this event */
-
+    event.preventDefault();
     /* make new constant named "clickedElement" and give it the value of "this" */
 
     const clickedElement = "this";
-
+    console.log('clicked')
     /* make a new constant "href" and read the attribute "href" of the clicked element */
 
     const href = clickedElement.getAttribute('href');
@@ -190,7 +191,6 @@ function addClickListenersToTags() {
 }
 
 generateTags();
-tagClickHandler();
 addClickListenersToTags();
 
 
@@ -213,7 +213,7 @@ function generateAuthors() {
 
         /* get authors from data-tags attribute */
 
-        const articleAuthor = articles.getAttribute('data-author');
+        const articleAuthor = article.getAttribute('data-author');
 
         /* generate HTML of the link */
 
@@ -221,18 +221,15 @@ function generateAuthors() {
 
         /* add generated code to html variable */
 
-        html.insertAdjacentHTML('beforeend', linkHTML);
+        authorWrapper.insertAdjacentHTML('afterend', linkHTML);
 
         /* insert HTML of all the links into the author wrapper */
 
-        authorWrapper.insertAdjacentHTML('beforeend', linkHTML);
+        authorWrapper.insertAdjacentHTML('afterend', linkHTML);
 
         /* END LOOP: for every article: */
     }
 }
-
-
-
 
 generateAuthors();
 
@@ -258,9 +255,9 @@ function addClickListenersToAuthors() {
 addClickListenersToAuthors();
 
 
-function authorClickHandler() {
+const authorClickHandler = function (event) {
     /* prevent default action for this event */
-
+    event.preventDefault();
     /* make new constant named "clickedElement" and give it the value of "this" */
 
     const clickedElement = "this";
@@ -290,5 +287,3 @@ function authorClickHandler() {
     /* execute function "generateTitleLinks" with article selector as argument */
     generateTitleLinks(optArticleSelector);
 }
-
-authorClickHandler();
