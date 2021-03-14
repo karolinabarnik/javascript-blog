@@ -6,7 +6,8 @@ const optArticleSelector = '.post',
     optArticleTagsSelector = '.post-tags .list',
     optAuthorSelector = '.post-author',
     optCloudClassCount = '5',
-    optCloudClassPrefix = 'tag-size-';
+    optCloudClassPrefix = 'tag-size-',
+    optAuthorsListSelector = '.authors';
 
 const titleClickHandler = function (event) {
     event.preventDefault();
@@ -226,6 +227,10 @@ addClickListenersToTags();
 
 function generateAuthors() {
 
+    /*[NEW] create a new variable allAuthors with an empty object */
+
+    let allAuthors = {};
+
     /* find all articles */
 
     const articles = document.querySelectorAll(optArticleSelector);
@@ -248,8 +253,39 @@ function generateAuthors() {
 
         authorWrapper.insertAdjacentHTML('afterend', linkHTML);
 
+        /* [NEW] check if this link is NOT already in allAuthors */
+        if (!allAuthors[articleAuthor]) {
+            /* [NEW] add tag to allTags object */
+            allAuthors[articleAuthor] = 1;
+        } else {
+            allAuthors[articleAuthor]++;
+        }
+
         /* END LOOP: for every article: */
     }
+
+    /* [NEW] find list of authors in right column */
+    const authorsList = document.querySelector('.authors');
+
+    /* [NEW] create variable for all links HTML code */
+    const tagsParams = calculateAuthorsParams(allAuthors);
+    console.log('tagsParams:', tagsParams)
+    let allAuthorsHTML = '';
+
+    /* [NEW] START LOOP: for each AUTHORS in allAuthors: */
+    for (let articleAuthor in allAuthors) {
+        /* [NEW] generate code of a link and add it to allAuthorHTML */
+
+
+        const authorLinkHTML = '<li>' + calculateAuthorClass(allAuthors[articleAuthor], tagsParams) + '</li>';
+        console.log('authorLinkHTML:', authorLinkHTML);
+
+        allAuthorsHTML += authorLinkHTML;
+
+        /* [NEW] END LOOP: for each author in allAuthor: */
+    }
+    /*[NEW] add HTML from allAuthorsHTML to authorList */
+    authorsList.innerHTML = allAuthorsHTML;
 }
 
 generateAuthors();
@@ -325,6 +361,34 @@ function calculateTagsParams(tags) {
 
 
 function calculateTagClass(count, params) {
+    const normalizedCount = count - params.min;
+
+    const normalizedMax = params.max - params.min;
+
+    const percentage = normalizedCount / normalizedMax;
+
+    const classNumber = Math.floor(percentage * (optCloudClassCount - 1) + 1);
+
+}
+
+function calculateAuthorsParams(authors) {
+
+    const params = {
+        max: 999999,
+        min: 0,
+    };
+    return calculateAuthorsParams
+
+    for (let tag in tags) {
+        console.log(tag + ' is used ' + tags[tag] + ' times');
+    }
+    if (tags[tag] > params.max) {
+        params.max = tags[tag];
+    }
+    return params;
+}
+
+function calculateAuthorClass(count, params) {
     const normalizedCount = count - params.min;
 
     const normalizedMax = params.max - params.min;
