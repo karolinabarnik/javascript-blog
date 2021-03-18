@@ -1,4 +1,7 @@
 'use strict';
+const templates = {
+    articleLink: Handlebars.compile(document.querySelector('#template-article-link').innerHTML)
+}
 
 const optArticleSelector = '.post',
     optTitleSelector = '.post-title',
@@ -142,8 +145,8 @@ function generateTags() {
         /* [NEW] generate code of a link and add it to allTagsHTML */
 
 
-        const tagLinkHTML = '<li>' + calculateTagClass(allTags[tag], tagsParams) + '</li>';
-        console.log('tagLinkHTML:', tagLinkHTML);
+
+        const tagLinkHTML = '<li><a href="#tag-' + tag + '" class="tag-size-' + calculateTagClass(allTags[tag], tagsParams) + '">' + tag + '</a></li>';
 
         allTagsHTML += tagLinkHTML;
 
@@ -274,10 +277,11 @@ function generateAuthors() {
 
     /* [NEW] START LOOP: for each AUTHORS in allAuthors: */
     for (let articleAuthor in allAuthors) {
+
         /* [NEW] generate code of a link and add it to allAuthorHTML */
 
 
-        const authorLinkHTML = '<li>' + calculateAuthorClass(allAuthors[articleAuthor], tagsParams) + '</li>';
+        const authorLinkHTML = '<li><a href="#author-' + articleAuthor + '">' + articleAuthor + ' (' + allAuthors[articleAuthor] + ')</a></li>';
         console.log('authorLinkHTML:', authorLinkHTML);
 
         allAuthorsHTML += authorLinkHTML;
@@ -303,9 +307,16 @@ const authorClickHandler = function (event) {
     const author = href.replace('#author-', ''); //Marion-Berrry
 
 
+    const activeLinks = document.querySelectorAll('a[href^="#author-"]');
+
+    /* START LOOP: for each found author link */
+    for (let activeLink of activeLinks) {
+        activeLink.classList.remove('active');
+    }
+
     /* find all tag links with "href" attribute equal to the "href" constant */
 
-    const authorLinksHref = document.querySelectorAll('a[href="' + href + '"');
+    const authorLinksHref = document.querySelectorAll('a[href="' + href + '"]');
 
     /* START LOOP: for each found author link */
 
@@ -322,6 +333,7 @@ const authorClickHandler = function (event) {
     /* execute function "generateTitleLinks" with article selector as argument */
     generateTitleLinks('[data-author="' + author + '"]');
 }
+
 
 function addClickListenersToAuthors() {
 
@@ -345,22 +357,33 @@ addClickListenersToAuthors();
 function calculateTagsParams(tags) {
 
     const params = {
-        max: 999999,
+        max: 0,
         min: 0,
     };
-    return calculateTagsParams
 
     for (let tag in tags) {
         console.log(tag + ' is used ' + tags[tag] + ' times');
-    }
-    if (tags[tag] > params.max) {
-        params.max = tags[tag];
+        if (tags[tag] > params.max) {
+            params.max = tags[tag];
+        }
     }
     return params;
 }
+
 
 
 function calculateTagClass(count, params) {
+    /* const params = {
+          max: 0,
+          min: 0,
+      };
+
+      for (let tag in tags) {
+          console.log(tags + ' is used ' + tags[tags] + ' times');
+      }
+      if (tags[tags] > params.max) {
+          params.max = tags[tag];*/
+
     const normalizedCount = count - params.min;
 
     const normalizedMax = params.max - params.min;
@@ -369,32 +392,6 @@ function calculateTagClass(count, params) {
 
     const classNumber = Math.floor(percentage * (optCloudClassCount - 1) + 1);
 
-}
-
-function calculateAuthorsParams(authors) {
-
-    const params = {
-        max: 999999,
-        min: 0,
-    };
-    return calculateAuthorsParams
-
-    for (let tag in tags) {
-        console.log(tag + ' is used ' + tags[tag] + ' times');
-    }
-    if (tags[tag] > params.max) {
-        params.max = tags[tag];
-    }
-    return params;
-}
-
-function calculateAuthorClass(count, params) {
-    const normalizedCount = count - params.min;
-
-    const normalizedMax = params.max - params.min;
-
-    const percentage = normalizedCount / normalizedMax;
-
-    const classNumber = Math.floor(percentage * (optCloudClassCount - 1) + 1);
+    return optCloudClassPrefix + classNumber
 
 }
