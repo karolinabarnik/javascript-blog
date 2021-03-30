@@ -310,7 +310,7 @@ function generateAuthors() {
     console.log('tagsParams:', tagsParams)
     /*let allAuthorsHTML = '';*/
     const allLinksData = {
-        articleAuthor: []
+        authors: []
     };
 
     /* [NEW] START LOOP: for each AUTHORS in allAuthors: */
@@ -322,13 +322,10 @@ function generateAuthors() {
         const authorLinkHTML = '<li><a href="#author-' + articleAuthor + '">' + articleAuthor + ' (' + allAuthors[articleAuthor] + ')</a></li>';
         console.log('authorLinkHTML:', authorLinkHTML);
 
+
         /*allAuthorsHTML += authorLinkHTML;*/
 
-        allLinksData.push({
-            tag: articleAuthor,
-            count: allAuthors[articleAuthor],
-            className: calculateTagClass(allAuthors[articleAuthor])
-        });
+        allLinksData.authors.push(articleAuthor);
 
         /* [NEW] END LOOP: for each author in allAuthor: */
     }
